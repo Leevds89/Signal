@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Klopkruis Signal</title>
+    <meta
+      name="description"
+      content="Klopkruis Signal is a live website that turns audience presence into visuals, sound, and trackable launch demand."
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <canvas id="signalCanvas" aria-hidden="true"></canvas>
+    <div class="ambient ambient-one" aria-hidden="true"></div>
+    <div class="ambient ambient-two" aria-hidden="true"></div>
+    <div class="grid-mask" aria-hidden="true"></div>
+
+    <header class="site-nav">
+      <a class="brand" href="/">KLOPKRUIS <span>SIGNAL</span></a>
+      <nav class="nav-links">
+        <a href="#experience">Experience</a>
+        <a href="#stack">Stack</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <a class="nav-cta" href="/admin">Control Room</a>
+    </header>
+
+    <main class="page-shell">
+      <section class="hero section">
+        <div class="hero-copy">
+          <p class="eyebrow">Realtime launch website</p>
+          <h1>Turn attention into a live signal people can feel.</h1>
+          <p class="lede">
+            This site now does more than pulse. It captures demand, shows live
+            participation, stores submissions in SQLite, and gives you an admin
+            control room for follow-up.
+          </p>
+
+          <div class="hero-actions">
+            <button id="heroJoinButton" class="button button-primary">
+              Join the Signal
+            </button>
+            <a class="button button-secondary" href="#contact">Plan a Launch</a>
+          </div>
+
+          <div class="feature-strip">
+            <article class="mini-feature">
+              <span class="mini-label">Live sync</span>
+              <strong>Socket.IO powers the shared field in real time.</strong>
+            </article>
+            <article class="mini-feature">
+              <span class="mini-label">Lead capture</span>
+              <strong>Your contact form now writes straight into SQLite.</strong>
+            </article>
+            <article class="mini-feature">
+              <span class="mini-label">Ops ready</span>
+              <strong>Admin auth, health checks, Docker, env config.</strong>
+            </article>
+          </div>
+        </div>
+
+        <aside class="signal-panel panel">
+          <div class="panel-topline">
+            <span class="badge">Live field telemetry</span>
+            <div class="connection">
+              <span class="connection-dot" id="connectionDot"></span>
+              <span id="connectionText">Connecting</span>
+            </div>
+          </div>
+
+          <div class="signal-core">
+            <p class="signal-label">Field intensity</p>
+            <div class="signal-value-row">
+              <span class="signal-value" id="intensityValue">0%</span>
+              <button id="soundButton" class="button button-ghost">
+                Enable Sound
+              </button>
+            </div>
+            <div class="meter" aria-label="Signal intensity meter">
+              <div class="meter-fill" id="meterFill"></div>
+            </div>
+            <p class="status-text" id="statusText">
+              The room is quiet. Start the signal and invite another screen in.
+            </p>
+          </div>
+
+          <div class="stats-grid">
+            <article class="stat-card">
+              <span class="stat-value" id="activeCount">0</span>
+              <span class="stat-label">Active listeners</span>
+            </article>
+            <article class="stat-card">
+              <span class="stat-value" id="peakCount">0</span>
+              <span class="stat-label">Session peak</span>
+            </article>
+            <article class="stat-card">
+              <span class="stat-value" id="joinCount">0</span>
+              <span class="stat-label">Total activations</span>
+            </article>
+            <article class="stat-card">
+              <span class="stat-value" id="submissionCount">0</span>
+              <span class="stat-label">Launch briefs</span>
+            </article>
+          </div>
+
+          <div class="detail-list">
+            <div class="detail-row">
+              <span>Last pulse</span>
+              <strong id="lastPulse">No joins yet</strong>
+            </div>
+            <div class="detail-row">
+              <span>Last brief</span>
+              <strong id="lastSubmissionAt">No submissions yet</strong>
+            </div>
+            <div class="detail-row">
+              <span>You</span>
+              <strong id="selfState">Observing</strong>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <section id="experience" class="section experience-grid">
+        <article class="panel manifesto-panel">
+          <p class="section-label">What this can become</p>
+          <h2>Build a site that behaves like a room, not a brochure.</h2>
+          <p>
+            Klopkruis Signal works well for product drops, creative launches,
+            fan communities, exhibition spaces, and internal moments where you
+            want people to feel the same thing at the same time.
+          </p>
+          <p>
+            The visual system reacts to live participants, the audio can deepen
+            with attention, and the contact layer turns curiosity into an
+            organized lead pipeline instead of a dead inbox.
+          </p>
+        </article>
+
+        <article class="panel list-panel">
+          <p class="section-label">Good fits</p>
+          <div class="stacked-list">
+            <div class="list-item">
+              <strong>Product launches</strong>
+              <span>Make hype visible before launch day.</span>
+            </div>
+            <div class="list-item">
+              <strong>Live events</strong>
+              <span>Let audience presence shape the atmosphere.</span>
+            </div>
+            <div class="list-item">
+              <strong>Communities</strong>
+              <span>Reward collective participation with a shared signal.</span>
+            </div>
+            <div class="list-item">
+              <strong>Internal campaigns</strong>
+              <span>Turn rollout comms into an interactive moment.</span>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="section capabilities-grid">
+        <article class="capability-card panel">
+          <p class="section-label">01</p>
+          <h3>Shared live state</h3>
+          <p>
+            Everyone on the page sees the same counts and pulses thanks to
+            Socket.IO broadcast updates from the server.
+          </p>
+        </article>
+        <article class="capability-card panel">
+          <p class="section-label">02</p>
+          <h3>Structured demand capture</h3>
+          <p>
+            The launch form collects project type, timing, budget, and message
+            so you get usable leads instead of vague emails.
+          </p>
+        </article>
+        <article class="capability-card panel">
+          <p class="section-label">03</p>
+          <h3>Admin review flow</h3>
+          <p>
+            Protected admin routes let you sign in, see submissions, update
+            statuses, and keep notes inside the site itself.
+          </p>
+        </article>
+        <article class="capability-card panel">
+          <p class="section-label">04</p>
+          <h3>Deployment baseline</h3>
+          <p>
+            This repo now includes env configuration, Docker support, a health
+            endpoint, and a documented production checklist.
+          </p>
+        </article>
+      </section>
+
+      <section id="stack" class="section build-grid">
+        <article class="panel">
+          <p class="section-label">Current MVP stack</p>
+          <h2>What is already wired in.</h2>
+          <div class="stack-cards">
+            <div class="stack-card">
+              <strong>Frontend</strong>
+              <span>Intentional landing page, animated canvas field, live stats, responsive layout.</span>
+            </div>
+            <div class="stack-card">
+              <strong>Backend</strong>
+              <span>Express routes, Socket.IO updates, validation, cookie-based admin sessions.</span>
+            </div>
+            <div class="stack-card">
+              <strong>Storage</strong>
+              <span>SQLite for submissions, statuses, notes, and timestamps.</span>
+            </div>
+            <div class="stack-card">
+              <strong>Operations</strong>
+              <span>Health check, env loader, deployment docs, Docker packaging.</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel process-panel">
+          <p class="section-label">Launch flow</p>
+          <h2>How this could run in practice.</h2>
+          <div class="process-list">
+            <div class="process-item">
+              <span>1</span>
+              <div>
+                <strong>Invite people in</strong>
+                <p>Drive traffic to the live page and let the signal show momentum publicly.</p>
+              </div>
+            </div>
+            <div class="process-item">
+              <span>2</span>
+              <div>
+                <strong>Capture the serious interest</strong>
+                <p>Use the brief form to turn attention into structured project demand.</p>
+              </div>
+            </div>
+            <div class="process-item">
+              <span>3</span>
+              <div>
+                <strong>Review from the control room</strong>
+                <p>Log into the admin page, prioritize leads, and add notes or statuses.</p>
+              </div>
+            </div>
+            <div class="process-item">
+              <span>4</span>
+              <div>
+                <strong>Deploy it live</strong>
+                <p>Run locally, ship with Docker, and mount persistent storage for SQLite in production.</p>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section id="contact" class="section contact-grid">
+        <article class="panel form-panel">
+          <p class="section-label">Start a project</p>
+          <h2>Send a launch brief.</h2>
+          <p class="form-intro">
+            Every submission lands in the local SQLite database and appears in
+            the admin control room at <code>/admin</code>.
+          </p>
+
+          <form id="leadForm" class="lead-form">
+            <div class="field-grid">
+              <label class="field">
+                <span>Name</span>
+                <input name="name" type="text" maxlength="80" required />
+              </label>
+              <label class="field">
+                <span>Email</span>
+                <input name="email" type="email" maxlength="160" required />
+              </label>
+            </div>
+
+            <div class="field-grid">
+              <label class="field">
+                <span>Company or brand</span>
+                <input name="company" type="text" maxlength="120" />
+              </label>
+              <label class="field">
+                <span>Project type</span>
+                <select name="projectType" required>
+                  <option value="">Select one</option>
+                  <option>Product launch</option>
+                  <option>Live event</option>
+                  <option>Community activation</option>
+                  <option>Internal campaign</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="field-grid">
+              <label class="field">
+                <span>Timeline</span>
+                <select name="timeline" required>
+                  <option value="">Select one</option>
+                  <option>ASAP</option>
+                  <option>2-4 weeks</option>
+                  <option>1-2 months</option>
+                  <option>Flexible</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Budget range</span>
+                <select name="budgetRange" required>
+                  <option value="">Select one</option>
+                  <option>Under $2k</option>
+                  <option>$2k-$5k</option>
+                  <option>$5k-$15k</option>
+                  <option>$15k+</option>
+                  <option>Not sure yet</option>
+                </select>
+              </label>
+            </div>
+
+            <label class="field">
+              <span>What should the site do?</span>
+              <textarea
+                name="message"
+                rows="5"
+                maxlength="2000"
+                placeholder="Tell us what kind of audience moment, campaign, or launch you want to create."
+                required
+              ></textarea>
+            </label>
+
+            <label class="checkbox-field">
+              <input name="wantsDemo" type="checkbox" />
+              <span>I want a live walkthrough of the current MVP.</span>
+            </label>
+
+            <div class="form-actions">
+              <button id="submitButton" class="button button-primary" type="submit">
+                Send Brief
+              </button>
+              <p id="formMessage" class="form-message" role="status"></p>
+            </div>
+          </form>
+        </article>
+
+        <article class="panel deploy-panel">
+          <p class="section-label">Ready to ship</p>
+          <h2>Deployment notes built into the project.</h2>
+
+          <div class="deploy-list">
+            <div class="deploy-item">
+              <strong>Health endpoint</strong>
+              <span><code>/health</code> returns uptime and site state.</span>
+            </div>
+            <div class="deploy-item">
+              <strong>Admin auth</strong>
+              <span>Protected with an env-based password and signed session cookie.</span>
+            </div>
+            <div class="deploy-item">
+              <strong>Local persistence</strong>
+              <span>SQLite keeps submissions and statuses without extra services.</span>
+            </div>
+            <div class="deploy-item">
+              <strong>Container support</strong>
+              <span>Dockerfile and env template are included for deployment.</span>
+            </div>
+          </div>
+
+          <div class="quote-panel">
+            <p>
+              “This is the kind of base you can keep shaping: add custom copy,
+              connect external APIs later, or turn the control room into a full
+              CRM handoff.”
+            </p>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>Klopkruis Signal MVP</span>
+      <span>Realtime presence, lead capture, admin review, deploy-ready.</span>
+    </footer>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/app.js"></script>
+  </body>
+</html>

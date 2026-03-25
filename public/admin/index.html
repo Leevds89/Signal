@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Klopkruis Signal Control Room</title>
+    <link rel="stylesheet" href="/admin/admin.css" />
+  </head>
+  <body>
+    <main class="admin-shell">
+      <section id="loginCard" class="login-card panel">
+        <p class="eyebrow">Admin control room</p>
+        <h1>Sign in to review launch briefs.</h1>
+        <p class="intro">
+          Use the admin password from your environment configuration to unlock
+          submissions and live overview data.
+        </p>
+
+        <form id="loginForm" class="login-form">
+          <label class="field">
+            <span>Password</span>
+            <input id="passwordInput" name="password" type="password" required />
+          </label>
+          <button id="loginButton" class="button button-primary" type="submit">
+            Sign In
+          </button>
+          <p id="loginMessage" class="message" role="status"></p>
+        </form>
+      </section>
+
+      <section id="dashboard" class="dashboard hidden">
+        <header class="dashboard-top panel">
+          <div>
+            <p class="eyebrow">Klopkruis Signal</p>
+            <h1>Control Room</h1>
+          </div>
+          <div class="dashboard-actions">
+            <button id="refreshButton" class="button button-secondary" type="button">
+              Refresh
+            </button>
+            <button id="logoutButton" class="button button-secondary" type="button">
+              Log Out
+            </button>
+          </div>
+        </header>
+
+        <section id="securityBanner" class="security-banner panel hidden"></section>
+
+        <section id="overviewCards" class="overview-grid"></section>
+
+        <section class="panel submissions-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Submissions</p>
+              <h2>Launch briefs</h2>
+            </div>
+            <p id="submissionsMeta" class="submissions-meta"></p>
+          </div>
+
+          <div id="submissionsList" class="submissions-list"></div>
+        </section>
+      </section>
+    </main>
+
+    <script src="/admin/admin.js"></script>
+  </body>
+</html>
